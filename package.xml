@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
-<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>ros2_py_template</name>
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="todo@todo.com">he</maintainer>
-  <license>GNU General Public License v3.0</license>
+  <name>ros2_proximity_monitor</name>
+  <version>0.1.0</version>
+  <description>Simple ROS 2 proximity monitor: publisher simulates distance, processor evaluates state.</description>
+  <maintainer email="you@example.com">Your Name</maintainer>
+  <license>MIT</license>
 
-  <test_depend>ament_copyright</test_depend>
-  <test_depend>ament_flake8</test_depend>
-  <test_depend>ament_pep257</test_depend>
-  <test_depend>python3-pytest</test_depend>
-  <exec_depend>ros2launch</exec_depend>
-  
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+
   <export>
     <build_type>ament_python</build_type>
   </export>
