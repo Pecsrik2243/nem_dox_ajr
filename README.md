@@ -26,7 +26,7 @@ mkdir -p ~/ros2_proximity_monitor/src
 cd ~/ros2_proximity_monitor/src
 
 # Csomag klónozása
-# git clone https://github.com/Pecsrik2243/nem_dox_ajr.git
+git clone https://github.com/Pecsrik2243/nem_dox_ajr.git
 
 # Build és setup
 cd ~/ros2_proximity_monitor
