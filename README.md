@@ -25,46 +25,19 @@ egy szenzor véletlenszerű távolságot generál, egy feldolgozó node pedig az
 mkdir -p ~/ros2_proximity_monitor/src
 cd ~/ros2_proximity_monitor/src
 
-# Csomag bemásolása / klónozása
-# -> helyezd ide a ros2_proximity_monitor mappát
+# Csomag klónozása
+# git clone https://github.com/Pecsrik2243/nem_dox_ajr.git
 
 # Build és setup
 cd ~/ros2_proximity_monitor
 colcon build
+
+# Sourceolás
 source install/setup.bash
 
 # Indítás
 ros2 launch ros2_proximity_monitor proximity_launch.py
 ```
-
-## Ellenőrzés
-```bash
-ros2 topic echo /proximity/distance
-ros2 topic echo /proximity/state
-```
-
-## ⚙️ Paraméterezés
-
-| Node | Paraméter | Default |
-|------|-----------|---------|
-| proximity_sensor | rate_hz | 5.0 |
-| proximity_sensor | min_cm, max_cm | 5.0 – 200.0 |
-| proximity_processor | warn_threshold_cm | 60.0 |
-| proximity_processor | danger_threshold_cm | 25.0 |
-
-Paraméterezett indítás:
-```bash
-ros2 run ros2_proximity_monitor proximity_sensor --ros-args -p rate_hz:=10
-```
-
-## Hibakezelés
-Ha ezt kapod:
-> Package 'ros2_proximity_monitor' not found
-
-Ellenőrizd:
-- helyes mappanév: ros2_proximity_monitor
-- a csomag a `src/` alatt van build előtt
-- build után futtasd: `source install/setup.bash`
 
 ## 📂 Projekt felépítés
 ```
@@ -80,6 +53,3 @@ ros2_proximity_monitor/
  ├── setup.py
  └── README.md
 ```
-
-## 📜 Licenc
-MIT
