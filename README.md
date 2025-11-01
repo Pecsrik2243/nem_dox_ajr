@@ -1,59 +1,85 @@
-# `ros2_py_template` package
-ROS 2 python package.  [![Static Badge](https://img.shields.io/badge/ROS_2-Humble-34aec5)](https://docs.ros.org/en/humble/)
-## Packages and build
+# ROS2 Proximity Monitor 🚨
 
-It is assumed that the workspace is `~/ros2_ws/`.
+**Tárgy-alapú közelségfigyelés szimulált szenzorral • Python • rclpy**
 
-### Clone the packages
-``` r
-cd ~/ros2_ws/src
+## 🎯 Projekt célja
+Ez a ROS2 csomag egy egyszerű proximity (közelség) figyelő rendszert valósít meg két node-dal:
+egy szenzor véletlenszerű távolságot generál, egy feldolgozó node pedig az érték alapján állapotot határoz meg:
+
+| Távolság | Állapot |
+|---------:|:-------|
+| < 25 cm | 🔴 DANGER |
+| < 60 cm | 🟠 WARNING |
+| >= 60 cm | 🟢 CLEAR |
+
+## 🧩 Felépítés
+| Node | Topic I/O | Üzenettípus | Leírás |
+|------|-----------|-------------|--------|
+| proximity_sensor | /proximity/distance → publish | std_msgs/Float32 | véletlenszerű távolság cm-ben |
+| proximity_processor | /proximity/distance → subscribe<br>/proximity/state → publish | Float32 → String | állapotkategorizálás |
+
+## 📦 Telepítés & futtatás
+
+```bash
+# Munkaterület létrehozás
+mkdir -p ~/ros2_proximity_monitor/src
+cd ~/ros2_proximity_monitor/src
+
+# Csomag bemásolása / klónozása
+# -> helyezd ide a ros2_proximity_monitor mappát
+
+# Build és setup
+cd ~/ros2_proximity_monitor
+colcon build
+source install/setup.bash
+
+# Indítás
+ros2 launch ros2_proximity_monitor proximity_launch.py
 ```
-``` r
-git clone https://github.com/sze-info/ros2_py_template
+
+## Ellenőrzés
+```bash
+ros2 topic echo /proximity/distance
+ros2 topic echo /proximity/state
 ```
 
-### Build ROS 2 packages
-``` r
-cd ~/ros2_ws
-```
-``` r
-colcon build --packages-select ros2_py_template --symlink-install
-```
+## ⚙️ Paraméterezés
 
-<details>
-<summary> Don't forget to source before ROS commands.</summary>
+| Node | Paraméter | Default |
+|------|-----------|---------|
+| proximity_sensor | rate_hz | 5.0 |
+| proximity_sensor | min_cm, max_cm | 5.0 – 200.0 |
+| proximity_processor | warn_threshold_cm | 60.0 |
+| proximity_processor | danger_threshold_cm | 25.0 |
 
-``` bash
-source ~/ros2_ws/install/setup.bash
-```
-</details>
-
-``` r
-ros2 launch ros2_py_template launch_example1.launch.py
+Paraméterezett indítás:
+```bash
+ros2 run ros2_proximity_monitor proximity_sensor --ros-args -p rate_hz:=10
 ```
 
-# Delete this part if you are using it as a template
+## Hibakezelés
+Ha ezt kapod:
+> Package 'ros2_proximity_monitor' not found
 
-ROS 2 pacage template, to get started, use template by clicking on the Green button labeled [`Use this template`](https://github.com/sze-info/ros2_py_template/generate) / [`Create new repository`](https://github.com/sze-info/ros2_py_template/generate). 
+Ellenőrizd:
+- helyes mappanév: ros2_proximity_monitor
+- a csomag a `src/` alatt van build előtt
+- build után futtasd: `source install/setup.bash`
 
-<p align="center"><img src="img/use_this_template01.png" width="60%" /></p>
+## 📂 Projekt felépítés
+```
+ros2_proximity_monitor/
+ ├── ros2_proximity_monitor/
+ │   ├── proximity_sensor.py
+ │   ├── proximity_processor.py
+ │   └── __init__.py
+ ├── launch/
+ │   └── proximity_launch.py
+ ├── resource/
+ ├── package.xml
+ ├── setup.py
+ └── README.md
+```
 
-
-Let's assume 
-- your Github username is `mycoolusername`
-- your ROS 2 repo shold be `cool_ros2_package`
-
-Replace everything in the cloned repo:
-
-- `ros2_py_template` >> `cool_ros2_package` (the folder was already renamed after `Use this template`)
-- `sze-info` >> `mycoolusername`
-- find all `todo` strings and fill the blanks
-
-The easiest way is VS code:
-
-<p align="center"><img src="img/replace01.png" width="90%" /></p>
-
-> [!IMPORTANT]  
-> Don't forget to rename the directory (folder) and the file too.
-
-Now `colcon build` your ROS 2 package and you can start wokring.
+## 📜 Licenc
+MIT
